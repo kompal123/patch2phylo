@@ -130,49 +130,7 @@ data/references/candidate_refs.fasta — same references in FASTA (RagTag needs 
 | **envs/ete3.yaml**                                       | `ete3` (+ deps like `reportlab`, matplotlib) for tree plotting (headless).                                                     |
 | **envs/qc.yaml**                                         | `multiqc` (and `fastp` if you aggregate read QC).                                                                              |
 
-Per-sample assemblies / reads
-The workflow expects, by default:
-patched scaffolds go to results/assembly/<sample>/patched/scaffolds.fasta (created by the workflow),
-clean reads (if mapping is enabled): results/qc/decontam/<sample>_1.clean.fastq.gz and ..._2.clean.fastq.gz.
-You can change directories and parameters in config/config.yaml.
-
-Main outputs
-
-Patched scaffolds: results/assembly/<sample>/patched/scaffolds.fasta
-Read mapping: results/mapping/<sample>.sorted.bam (+ index)
-Consensus: results/consensus/<sample>.fa (if enabled)
-
-MSA:
-
-results/msa/scaffolds_all.fasta (concatenated)
-results/msa/aligned_scaffolds.fasta (MAFFT)
-
-Phylogeny:
-
-results/msa/tree.nwk (IQ-TREE2)
-Plots: results/plots/tree.svg, tree.pdf, tree.png (ETE3)
-
-Variability:
-
-results/shannon_variability/variability.txt (per-site entropy)
-results/shannon_variability/variability_windowed.txt (windowed)
-results/shannon_variability/variability_plot.png
-
-QC summary: results/multiqc_report.html
-
-Configuration
-
-config/config.yaml (example):
-
-Notable implementation details
-
-RagTag is invoked with --aligner mm2 and passes safe minimap2 flags. Threads use -t.
-MSA prefers MAFFT (--auto) and will fall back from ClustalO if needed.
-IQ-TREE2 runs in DNA mode with ModelFinder and UFboot + SH-aLRT; we pre-sanitize U/u → T to avoid datatype issues.
-ETE3 plotting: scripts/plot_ete3_tree.py normalizes IQ-TREE branch support labels like 100/100:0.01 so ETE3 can parse them, then renders SVG/PDF/PNG.
-Shannon entropy: scripts/shannon_variability.py (BioPython + matplotlib/Agg) writes raw & windowed CSVs and a plot.
-
-Conda environments
+## Conda environments
 
 Environment YAMLs live in envs/. We pin a few versions to avoid common ABI and zlib conflicts:
 pandas/numpy versions compatible (prevents “numpy.dtype size changed” errors).
@@ -184,20 +142,20 @@ If you see solving errors, try with mamba:
 snakemake --use-conda --cores 8 --conda-frontend mamba
 e workflow uses --latency-wait. You can increase it, e.g. --latency-wait 120.
 
-Reproducibility
+## Reproducibility
 
 All steps are versioned through Conda envs.
 Snakemake tracks code, inputs, and conda env definitions; changing any triggers appropriate re-runs.
 
-Citation / credits
+## Citation / credits
 
 Please cite the tools you use:
 Snakemake; minimap2; RagTag; BLAST+; bwa / samtools; racon; seqkit; MAFFT / Clustal Omega; IQ-TREE2; ETE3; MultiQC; Biopython; matplotlib.
 
-License
+## License
 
 MIT (or your preferred license)
 
-Contact
+## Contact
 
 Issues and questions: open a GitHub issue or email the maintainer.
