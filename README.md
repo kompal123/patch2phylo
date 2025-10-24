@@ -10,13 +10,9 @@ Pipeline overview
 Per sample
 
 (Optional upstream) QC / decontaminate reads (fastp, etc.)
-
 Select best reference for each sample via BLAST.
-
 Patch/scaffold contigs to the best reference with RagTag (minimap2 aligner).
-
 Index & map reads to patched scaffolds with bwa + samtools.
-
 Polish / consensus (e.g., racon) → per-sample scaffolds.fasta and consensus.
 
 Across samples
@@ -29,13 +25,10 @@ Across samples
 Requirements
 
 Linux/macOS with Bash
-
 mamba or conda (miniforge/mambaforge recommended)
 
 Snakemake ≥7
-
 A POSIX shell (/usr/bin/bash)
-
 Important: Configure strict channel priority once:
 
 conda config --set channel_priority strict
@@ -60,10 +53,8 @@ snakemake --use-conda --cores 8 \
   --rerun-incomplete --latency-wait 60 --printshellcmds
 
 Inputs
-
 config/samples.tsv (tab or whitespace-separated)
 Minimal example:
-
 sample
 sample_22
 sample_24
@@ -74,46 +65,35 @@ sample_25
 If you also track read paths, add columns r1 and r2. The rules that need them can read from here.
 
 References
-
 resources/blastdb/candidate_db.* — BLAST DB built from your candidate references.
-
 data/references/candidate_refs.fasta — same references in FASTA (RagTag needs a FASTA).
 
 Per-sample assemblies / reads
 The workflow expects, by default:
-
 patched scaffolds go to results/assembly/<sample>/patched/scaffolds.fasta (created by the workflow),
-
 clean reads (if mapping is enabled): results/qc/decontam/<sample>_1.clean.fastq.gz and ..._2.clean.fastq.gz.
-
 You can change directories and parameters in config/config.yaml.
 
 Main outputs
 
 Patched scaffolds: results/assembly/<sample>/patched/scaffolds.fasta
-
 Read mapping: results/mapping/<sample>.sorted.bam (+ index)
-
 Consensus: results/consensus/<sample>.fa (if enabled)
 
 MSA:
 
 results/msa/scaffolds_all.fasta (concatenated)
-
 results/msa/aligned_scaffolds.fasta (MAFFT)
 
 Phylogeny:
 
 results/msa/tree.nwk (IQ-TREE2)
-
 Plots: results/plots/tree.svg, tree.pdf, tree.png (ETE3)
 
 Variability:
 
 results/shannon_variability/variability.txt (per-site entropy)
-
 results/shannon_variability/variability_windowed.txt (windowed)
-
 results/shannon_variability/variability_plot.png
 
 QC summary: results/multiqc_report.html
@@ -149,55 +129,31 @@ parameters:
 Notable implementation details
 
 RagTag is invoked with --aligner mm2 and passes safe minimap2 flags. Threads use -t.
-
 MSA prefers MAFFT (--auto) and will fall back from ClustalO if needed.
-
 IQ-TREE2 runs in DNA mode with ModelFinder and UFboot + SH-aLRT; we pre-sanitize U/u → T to avoid datatype issues.
-
 ETE3 plotting: scripts/plot_ete3_tree.py normalizes IQ-TREE branch support labels like 100/100:0.01 so ETE3 can parse them, then renders SVG/PDF/PNG.
-
 Shannon entropy: scripts/shannon_variability.py (BioPython + matplotlib/Agg) writes raw & windowed CSVs and a plot.
 
 Conda environments
 
 Environment YAMLs live in envs/. We pin a few versions to avoid common ABI and zlib conflicts:
-
 pandas/numpy versions compatible (prevents “numpy.dtype size changed” errors).
-
 samtools and zlib/libzlib pins to satisfy solver compatibility.
-
 ete3, mafft, iqtree, seqkit, blast, ragtag, minimap2, bwa, racon, multiqc.
 
 If you see solving errors, try with mamba:
 
 snakemake --use-conda --cores 8 --conda-frontend mamba
-
-Troubleshooting (quick)
-
-NumPy/Pandas ABI error: use the provided envs; don’t mix system pandas with conda numpy.
-
-Permission denied on scripts/*.py: these are run with python script.py (no execute bit required). Ensure rules call python, not the script directly.
-
-RagTag “unrecognized argument --threads”: use -t for threads; --threads is for the workflow shell, not RagTag.
-
-samtools: libncurses.so.5 missing: use the pinned samtools in env; don’t rely on system samtools.
-
-ClustalO killed / OOM: the workflow falls back to MAFFT automatically.
-
-ETE3 “Unexpected newick format '100/100:…'”: we normalize support labels before parsing; make sure you’re using the included plot_ete3_tree.py.
-
-MultiQC output missing: some filesystems are slow; the workflow uses --latency-wait. You can increase it, e.g. --latency-wait 120.
+e workflow uses --latency-wait. You can increase it, e.g. --latency-wait 120.
 
 Reproducibility
 
 All steps are versioned through Conda envs.
-
 Snakemake tracks code, inputs, and conda env definitions; changing any triggers appropriate re-runs.
 
 Citation / credits
 
 Please cite the tools you use:
-
 Snakemake; minimap2; RagTag; BLAST+; bwa / samtools; racon; seqkit; MAFFT / Clustal Omega; IQ-TREE2; ETE3; MultiQC; Biopython; matplotlib.
 
 License
