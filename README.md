@@ -34,15 +34,15 @@ Important: Configure strict channel priority once:
 conda config --set channel_priority strict
 
 Quick start
-# 1) Clone
+# 1) clone
 git clone https://github.com/<you>/patch2phylo.git
 cd patch2phylo
 
 # 2) Inspect and edit config
-#   - config/config.yaml
-#   - config/samples.tsv
-#   - resources/blastdb/ (candidate references as BLAST DB + FASTA)
-#   - data/references/candidate_refs.fasta
+ - config/config.yaml
+ - config/samples.tsv
+ - resources/blastdb/ (candidate references as BLAST DB + FASTA)
+ - data/references/candidate_refs.fasta
 
 # 3) Dry-run
 snakemake -np
@@ -101,30 +101,6 @@ QC summary: results/multiqc_report.html
 Configuration
 
 config/config.yaml (example):
-
-samples_tsv: "config/samples.tsv"
-
-results:
-  assembly_dir: "results/assembly"
-  msa_dir: "results/msa"
-  plots_dir: "results/plots"
-
-logs:
-  clustalo: "logs/clustalo"
-  iqtree: "logs/iqtree"
-
-parameters:
-  ragtag:
-    aligner: "mm2"
-    mm2_params: "--secondary=no"   # passed through
-    threads: 1
-  msa:
-    threads: 4
-  iqtree:
-    threads: 4
-  variability:
-    window_size: 100
-    step_size: 100
 
 Notable implementation details
 
