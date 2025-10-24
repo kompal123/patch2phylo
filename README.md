@@ -38,6 +38,37 @@ Important: Configure strict channe l priority once:
 
 conda config --set channel_priority strict
 
+## Repository Layout
+```
+patch2phylo/
+├─ README.md
+├─ config/
+│  └─ config.yaml
+├─ workflow/
+│  ├─ Snakefile
+│  ├─ rules/
+│  │  ├─ assembly.smk
+│  │  ├─ mapping_and_consensus.smk
+│  │  ├─ msa.smk
+│  │  ├─ phylogeny.smk
+│  │  └─ multiqc.smk
+│  ├─ envs/
+│  │  ├─ ragtag.yaml
+│  │  ├─ bwa.yaml
+│  │  ├─ msa.yaml
+│  │  ├─ iqtree.yaml
+│  │  └─ ete3.yaml
+│  └─ scripts/
+│     ├─ patch_with_ref.py
+│     ├─ shannon_variability.py
+│     └─ plot_ete3_tree.py
+├─ resources/
+│  └─ (reference FASTAs, BLAST DBs, etc.)
+└─ logs/
+   └─ (pipeline logs)
+
+```
+
 Quick start
 ## 1) clone
 git clone https://github.com/<you>/patch2phylo.git
