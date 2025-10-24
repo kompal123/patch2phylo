@@ -5,10 +5,15 @@ patch2phylo
 From draft assemblies to a phylogenetic tree — end-to-end, reproducible, and powered by Snakemake + Conda.
 This workflow patches sample contigs against the best reference, maps reads, builds per-sample consensus, aligns all consensuses, infers a tree, plots it, and summarizes QC with MultiQC. It also computes per-position and sliding-window Shannon entropy across the alignment.
 
-Pipeline overview
+<p align="left">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.10+-blue.svg">
+  <img alt="R" src="https://img.shields.io/badge/R-%3E=4.0-276DC3.svg">
+  <img alt="Jupyter" src="https://img.shields.io/badge/Jupyter-%F0%9F%93%9A-orange.svg">
+</p>
+
+## Pipeline overview
 
 Per sample
-
 (Optional upstream) QC / decontaminate reads (fastp, etc.)
 Select best reference for each sample via BLAST.
 Patch/scaffold contigs to the best reference with RagTag (minimap2 aligner).
@@ -22,32 +27,32 @@ Across samples
 9. Variability: compute per-site entropy + sliding-window entropy and a PNG plot.
 10. MultiQC summary report.
 
-Requirements
+## Requirements
 
 Linux/macOS with Bash
 mamba or conda (miniforge/mambaforge recommended)
 
 Snakemake ≥7
 A POSIX shell (/usr/bin/bash)
-Important: Configure strict channel priority once:
+Important: Configure strict channe l priority once:
 
 conda config --set channel_priority strict
 
 Quick start
-# 1) clone
+## 1) clone
 git clone https://github.com/<you>/patch2phylo.git
 cd patch2phylo
 
-# 2) Inspect and edit config
+## 2) Inspect and edit config
  - config/config.yaml
  - config/samples.tsv
  - resources/blastdb/ (candidate references as BLAST DB + FASTA)
  - data/references/candidate_refs.fasta
 
-# 3) Dry-run
+## 3) Dry-run
 snakemake -np
 
-# 4) Run (adjust cores and conda prefix as needed)
+## 4) Run (adjust cores and conda prefix as needed)
 snakemake --use-conda --cores 8 \
   --conda-prefix /home/$USER/.snakemake/conda \
   --rerun-incomplete --latency-wait 60 --printshellcmds
