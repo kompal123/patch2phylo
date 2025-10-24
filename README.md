@@ -104,6 +104,32 @@ References
 resources/blastdb/candidate_db.* — BLAST DB built from your candidate references.
 data/references/candidate_refs.fasta — same references in FASTA (RagTag needs a FASTA).
 
+| Component                                                | What it does                                                                                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **config/config.yaml**                                   | Central knobs: directories (`results`, `logs`), threads, and parameters (RagTag, MSA/MAFFT, IQ-TREE, variability window/step). |
+| **samples.tsv**                                          | Lists `sample` IDs; may include `r1`/`r2` columns for paired reads used by mapping/consensus rules.                            |
+| **resources/blastdb/candidate_db.***                     | BLAST database of candidate references used to select the best reference per sample.                                           |
+| **data/references/candidate_refs.fasta**                 | Same references as FASTA (required by RagTag).                                                                                 |
+| **results/assembly/<sample>/patched/scaffolds.fasta**    | Patched scaffolds per sample produced by RagTag (`--aligner mm2`, safe minimap2 params).                                       |
+| **results/mapping/<sample>.sorted.bam(.bai)**            | Read mapping (BWA-MEM → samtools sort/index) if reads are provided in `samples.tsv`.                                           |
+| **results/consensus/<sample>.fa**                        | Per-sample consensus sequence (optional rule).                                                                                 |
+| **results/msa/scaffolds_all.fasta**                      | Concatenated per-sample sequences (longest scaffold per sample) for alignment.                                                 |
+| **results/msa/aligned_scaffolds.fasta**                  | Multiple sequence alignment (MAFFT `--auto`; falls back from ClustalO if needed).                                              |
+| **results/msa/tree.nwk**                                 | Maximum-likelihood phylogeny (IQ-TREE2 with ModelFinder + UFboot 1000 + SH-aLRT 1000; DNA mode; `U/u→T` sanitize).             |
+| **results/plots/tree.{svg,pdf,png}**                     | Tree rendered with ETE3; plotting script normalizes IQ-TREE support labels (e.g., `100/100:0.01`) for parsing.                 |
+| **results/shannon_variability/variability.txt**          | Per-site Shannon entropy across the MSA.                                                                                       |
+| **results/shannon_variability/variability_windowed.txt** | Sliding-window mean entropy (window/step from config).                                                                         |
+| **results/shannon_variability/variability_plot.png**     | Plot of per-site (optional) and windowed entropy.                                                                              |
+| **results/multiqc_report.html**                          | Combined QC report across logs/metrics (MultiQC).                                                                              |
+| **scripts/plot_ete3_tree.py**                            | Reads `tree.nwk`, fixes IQ-TREE branch labels, renders SVG/PDF/PNG (ETE3, headless).                                           |
+| **scripts/shannon_variability.py**                       | Computes entropy tables and plot (Biopython + matplotlib/Agg); robust to gaps.                                                 |
+| **envs/ragtag.yaml**                                     | `ragtag`, `minimap2`, `seqkit`, `blast` (pins to stable combos).                                                               |
+| **envs/bwa.yaml**                                        | `bwa 0.7.19`, `samtools 1.18` with compatible `libzlib`/`zlib` pins to avoid solver/ABI issues.                                |
+| **envs/msa.yaml**                                        | `mafft` (primary), optional `clustalo`, plus `seqkit` for FASTA ops.                                                           |
+| **envs/iqtree.yaml**                                     | `iqtree2` for ML tree inference with ModelFinder/UFboot.                                                                       |
+| **envs/ete3.yaml**                                       | `ete3` (+ deps like `reportlab`, matplotlib) for tree plotting (headless).                                                     |
+| **envs/qc.yaml**                                         | `multiqc` (and `fastp` if you aggregate read QC).                                                                              |
+
 Per-sample assemblies / reads
 The workflow expects, by default:
 patched scaffolds go to results/assembly/<sample>/patched/scaffolds.fasta (created by the workflow),
