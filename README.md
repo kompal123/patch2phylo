@@ -7,8 +7,8 @@ This workflow patches sample contigs against the best reference, maps reads, bui
 
 <p align="left">
   <img alt="Python" src="https://img.shields.io/badge/Python-3.10+-blue.svg">
-  <img alt="R" src="https://img.shields.io/badge/R-%3E=4.0-276DC3.svg">
-  <img alt="Jupyter" src="https://img.shields.io/badge/Jupyter-%F0%9F%93%9A-orange.svg">
+  <img alt="R" src="https://img.shields.io/badge/linux-%3E=4.0-276DC3.svg">
+  <img alt="Jupyter" src="https://img.shields.io/badge/Snakemake-%F0%9F%93%9A-orange.svg">
 </p>
 
 ## Pipeline overview
@@ -70,39 +70,28 @@ patch2phylo/
 ```
 
 Quick start
-## 1) clone
+##  clone
 git clone https://github.com/<you>/patch2phylo.git
 cd patch2phylo
 
-## 2) Inspect and edit config
+##  Inspect and edit config
  - config/config.yaml
  - config/samples.tsv
  - resources/blastdb/ (candidate references as BLAST DB + FASTA)
  - data/references/candidate_refs.fasta
 
-## 3) Dry-run
+## Dry-run
 snakemake -np
 
-## 4) Run (adjust cores and conda prefix as needed)
+## Run (adjust cores and conda prefix as needed)
 snakemake --use-conda --cores 8 \
   --conda-prefix /home/$USER/.snakemake/conda \
   --rerun-incomplete --latency-wait 60 --printshellcmds
 
 Inputs
 config/samples.tsv (tab or whitespace-separated)
-Minimal example:
-sample
-sample_22
-sample_24
-sample_25
 ...
 
-
-If you also track read paths, add columns r1 and r2. The rules that need them can read from here.
-
-References
-resources/blastdb/candidate_db.* — BLAST DB built from your candidate references.
-data/references/candidate_refs.fasta — same references in FASTA (RagTag needs a FASTA).
 
 | Component                                                | What it does                                                                                                                   |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
