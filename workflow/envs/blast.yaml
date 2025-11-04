@@ -1,0 +1,12 @@
+# envs/blast.yaml
+name: blast
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - blast=2.*        # provides makeblastdb, blastn/blastp, etc.
+  - python=3.11      # only if your rule runs a Python helper; otherwise remove
+       # provides makeblastdb, blastn, etc.
+
+
+

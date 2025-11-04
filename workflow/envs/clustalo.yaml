@@ -1,0 +1,9 @@
+# workflow/envs/clustalo.yaml
+name: clustalo-env
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - clustalo
+

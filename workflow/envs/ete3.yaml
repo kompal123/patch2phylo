@@ -1,0 +1,13 @@
+name: ete3-env
+# workflow/envs/ete3.yaml
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - ete3=3.*
+  - pyqt                   # needed for ETE3 rendering
+  - matplotlib             # often used for exports
+  - ete3
+  - cairosvg  # for SVG-to-PDF conversion
+  - python

@@ -1,0 +1,7 @@
+# workflow/envs/bowtie2.yaml
+name: bowtie2
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - bowtie2=2.5.3

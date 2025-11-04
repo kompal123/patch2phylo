@@ -1,0 +1,10 @@
+# envs/ivar.yaml
+name: ivar
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - ivar
+  - samtools
+  - minimap2

@@ -1,0 +1,8 @@
+# workflow/envs/racon.yaml
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - racon=1.4.13
+
+

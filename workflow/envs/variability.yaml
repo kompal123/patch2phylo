@@ -1,0 +1,12 @@
+# workflow/envs/variability.yaml
+name: variability
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - biopython
+  - numpy
+  - matplotlib
+

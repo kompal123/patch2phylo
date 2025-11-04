@@ -1,0 +1,9 @@
+name: msa
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - clustalo=1.2.4
+  - mafft=7.*
+  - python=3.11  # harmless; ensures a modern env
+

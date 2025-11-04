@@ -1,0 +1,8 @@
+# workflow/envs/seqkit.yaml
+name: seqkit
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - seqkit=2.10.0
