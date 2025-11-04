@@ -1,0 +1,37 @@
+configfile: "config/config.yaml"
+
+import pandas as pd
+
+# Load sample list
+samples_df = pd.read_csv(config["samples_tsv"], sep=r"\s+", header=0)
+SAMPLES = samples_df["sample"].tolist()
+
+# Include modular rule files
+include: "rules/qc.smk"
+include: "rules/decontam.smk"
+include: "rules/assembly.smk"           # de novo, polishing, ref selection, patching
+include: "rules/mapping_and_consensus.smk"  # indexing, mapping, consensus
+include: "rules/msa.smk"
+include: "rules/shannon_variability.smk"
+include: "rules/phylogeny.smk"
+include: "rules/kraken.smk"
+include: "rules/multiqc.smk"
+
+# Final output rule: only true end-products
+rule all:
+    input:
+        # Kraken2 MultiQC screening report
+        config["results"]["multiqc_report"],
+        # Decontamination: placeholder (optional)
+        # Assembly & consensus
+        expand("{dir}/{sample}.fasta", dir=config["results"]["consensus_dir"], sample=SAMPLES),
+        # Variability
+        f"{config['results']['variability_dir']}/variability.txt",
+        f"{config['results']['variability_dir']}/variability_windowed.txt",
+        f"{config['results']['variability_dir']}/variability_plot.png",
+        # Phylogenetic tree
+        f"{config['results']['msa_dir']}/tree.nwk",
+        f"{config['results']['plots_dir']}/tree.svg",
+         # MultiQC report driven by config
+        config["results"]["multiqc_report"]
+
