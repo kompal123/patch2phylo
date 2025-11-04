@@ -1,0 +1,9 @@
+sample	fq1	fq2
+sample_22	data/reads/sample_22_1.fastq.gz	data/reads/sample_22_2.fastq.gz
+sample_24	data/reads/sample_24_1.fastq.gz	data/reads/sample_24_2.fastq.gz
+sample_25	data/reads/sample_25_1.fastq.gz	data/reads/sample_25_2.fastq.gz
+sample_34	data/reads/sample_34_1.fastq.gz	data/reads/sample_34_2.fastq.gz
+sample_36	data/reads/sample_36_1.fastq.gz	data/reads/sample_36_2.fastq.gz
+sample_37	data/reads/sample_37_1.fastq.gz	data/reads/sample_37_2.fastq.gz
+sample_50	data/reads/sample_50_1.fastq.gz	data/reads/sample_50_2.fastq.gz
+sample_65	data/reads/sample_65_1.fastq.gz	data/reads/sample_65_2.fastq.gz
