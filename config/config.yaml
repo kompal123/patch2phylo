@@ -1,0 +1,81 @@
+# config/config.yaml
+
+# ---------- INPUTS ----------
+adapter_path:    "resources/adapters/TruSeq3-PE.fa"
+samples_tsv:     "config/samples.tsv"
+reference:       "data/reference/ref.fasta"
+candidate_refs:  "data/references/candidate_refs.fasta"   # FASTA of all candidate genomes
+
+# ---------- OPTIONAL DE-CONTAMINATION ----------
+contaminants_fasta: ""   # "" to skip de-contamination
+kraken2_db:        "resources/kraken_db/minikraken2"
+
+# ---------- OUTPUT DIRECTORIES ----------
+results:
+  qc_trimmed:      "results/qc/trimmed"
+  qc_decont:       "results/qc/decontam"
+  kraken_dir:      "results/kraken"
+  assembly_dir:    "results/assembly"
+  msa_dir:         "results/msa"
+  variability_dir: "results/shannon_variability"
+  plots_dir:       "results/plots"
+  multiqc_report:  "results/multiqc_report.html"
+  consensus_dir: "results/consensus"
+  mapping_dir:   "results/mapping"   # if your mapping rules use it
+# (optional but likely used)
+
+# ---------- LOG DIRECTORIES ----------
+logs:
+  fastp:       "logs/fastp"
+  decontam:      "logs/decontam"
+  kraken2:     "logs/kraken2"
+  spades:      "logs/spades"
+  racon:       "logs/racon"
+  blast:       "logs/blast"
+  ragtag:      "logs/ragtag"
+  clustalo:    "logs/clustalo"
+  variability: "logs/variability"
+  ivar:        "logs/ivar"
+  iqtree:      "logs/iqtree"
+  bwa:       "logs/bwa"
+  bcftools:  "logs/bcftools"
+
+# ---------- PARAMETERS ----------
+parameters:
+  fastp:
+    qualified_quality_phred:    12
+    unqualified_percent_limit:  35
+    n_base_limit:               5
+    length_required:            55
+    detect_adapter_for_pe:      true
+
+  spades:
+    threads: 8
+    memory:  16   # GB
+
+  racon:
+    threads: 4    # polishing
+
+  blast:
+    threads: 2    # reference-selection
+
+  ragtag:
+    threads: 8
+
+  clustalo:
+    threads: 8    # for alignment
+
+  variability:
+    window_size: 100
+    step_size:   100
+
+  kraken2:
+    threads: 8
+
+  ivar:
+    threads: 4    # consensus calling
+
+  iqtree:
+    threads: 4
+
+
